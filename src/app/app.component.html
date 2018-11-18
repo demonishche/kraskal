@@ -1,21 +1,29 @@
-<button (click)='addVertex()'>+</button>
-<button (click)='setTestToEdges()'>Set test values</button>
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th *ngFor='let vertex of vertexes'>{{vertex}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor='let i of vertexes'>
-      <td>{{i}}</td>
-      <td *ngFor='let j of vertexes'><input *ngIf='i < j' id='edge_{{i + "_to_" + j}}' type="number" name="" value='0'></td>
-    </tr>
-  </tbody>
-</table>
-<button (click)='getEdges()'>Get edges</button>
-<button (click)='searchSmallerTree()'>Min tree</button>
+<div class="appContent">
+<div class="row">
+  <div class="inputContent">
+    <button (click)='addVertex()'>+</button>
+    <button (click)='setTestToEdges()'>Set test values</button>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th *ngFor='let vertex of vertexes'>{{vertex}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let i of vertexes'>
+          <td>{{i}}</td>
+          <td *ngFor='let j of vertexes'><input *ngIf='i < j' id='edge_{{i + "_to_" + j}}' type="number" name="" value='0'></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <button (click)='getEdges()'>Get edges</button> -->
+    <button (click)='searchSmallerTree()'>Min tree</button>
+  </div>
+</div>
 
-<div id="cy"></div>
-<div id="cyResult"></div>
+<div class="row">
+  <div id="cy"></div>
+  <div id="cyResult"></div>
+</div>
+</div>

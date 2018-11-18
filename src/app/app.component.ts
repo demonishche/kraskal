@@ -54,6 +54,7 @@ export class AppComponent {
 			return {
 				data: {
 					id: '' + item.from + item.to,
+					name: '' + item.weight,
 					source: '' + item.from,
 					target: '' + item.to
 				}
@@ -77,14 +78,28 @@ export class AppComponent {
 						'label': 'data(id)',
 						'font-size': '10'
 					},
+				},
+				{
+					selector: 'edge',
+					style: {
+						'text-wrap': 'wrap',
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'text-max-width': '100px',
+						'label': 'data(name)',
+						'font-size': '10'
+					},
 				}
-			]
+			],
+			zoom: 1,
+			zoomingEnabled: false
 		});
 
 		let edgesResult = this.result.map(item => {
 			return {
 				data: {
 					id: '' + item.from + item.to,
+					name: '' + item.weight,
 					source: '' + item.from,
 					target: '' + item.to
 				}
@@ -106,10 +121,23 @@ export class AppComponent {
 						'text-halign': 'center',
 						'text-max-width': '100px',
 						'label': 'data(id)',
-						'font-size': '10'
+						'font-size': '12'
+					},
+				},
+				{
+					selector: 'edge',
+					style: {
+						'text-wrap': 'wrap',
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'text-max-width': '100px',
+						'label': 'data(name)',
+						'font-size': '12'
 					},
 				}
-			]
+			],
+			zoom: 1,
+			zoomingEnabled: false
 		});
 	
   }
@@ -143,22 +171,24 @@ export class AppComponent {
   }
 
   searchSmallerTree(): void {
-	let result: Edge[] = [];
-	this.sortEdges();
+		this.getEdges()
+		let result: Edge[] = [];
+		this.sortEdges();
 
-	this.edges.forEach(item => {
-		if (result.length === 0)
-			result.push(item);
-		
-		let temp = [...result, item];
-		if (this.isLoop(temp)) 
-			return;
-		else
-			result.push(item);
-	});
+		this.edges.forEach(item => {
+			if (result.length === 0)
+				result.push(item);
+			
+			let temp = [...result, item];
+			if (this.isLoop(temp)) 
+				return;
+			else
+				result.push(item);
+		});
 
-	this.result = result;
-	setTimeout(() => this.buildGraph(), 0);
+		this.result = result;
+
+		setTimeout(() => this.buildGraph(), 0);
 
 	
   }
