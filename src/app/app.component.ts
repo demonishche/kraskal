@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-// import * as d3 from 'd3';
-declare let d3: any;
+import * as cytoscape from 'cytoscape';
 
 export interface Edge {
 	from: number,
@@ -43,51 +42,76 @@ export class AppComponent {
   }
 
   buildGraph() {
+		let data = this.vertexes.map(item => {
+			return {
+				data: {
+					id: '' + item
+				}
+			}
+		});
 
-	var svg = d3.select("body").append("svg")
-		.attr("width", 600)
-		.attr("height", 600)
-		.append("g");	
+		let edgesData = this.edges.map(item => {
+			return {
+				data: {
+					id: '' + item.from + item.to,
+					source: '' + item.from,
+					target: '' + item.to
+				}
+			}
+		});
 
-	var force = d3.layout.force()
-		.gravity(.05)
-		.distance(100)
-		.charge(-100)
-		.size([600, 600]);
+		let grahp1 = cytoscape({
+			container: document.getElementById('cy'),
+			elements: [
+				...data,
+				...edgesData
+			],
+			style: [ // the stylesheet for the graph
+				{
+					selector: 'node',
+					style: {
+						'text-wrap': 'wrap',
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'text-max-width': '100px',
+						'label': 'data(id)',
+						'font-size': '10'
+					},
+				}
+			]
+		});
 
-	force
-		.nodes(this.vertexes)
-		.links(this.edges)
-		.start();
-  
-	var link = svg.selectAll(".link")
-		.data(this.edges)
-	  .enter().append("line")
-		.attr("class", "link")
-	//   .style("stroke-width", function(d) {  return Math.sqrt(d.weight); });
-  
-	var node = svg.selectAll(".node")
-		.data(this.vertexes)
-	  .enter().append("g")
-		.attr("class", "node")
-		.call(force.drag);
-  
-	node.append("circle")
-		.attr("r","5");
-  
-	node.append("text")
-		.attr("dx", 12)
-		.attr("dy", ".35em")
-		.text(function(d) { return d });
-  
-	force.on("tick", function() {
-	  link.attr("x1", function(d) { return d.from.x; })
-		  .attr("y1", function(d) { return d.from.y; })
-		  .attr("x2", function(d) { return d.to.x; })
-		  .attr("y2", function(d) { return d.to.y; });
-  
-	  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-	});
+		let edgesResult = this.result.map(item => {
+			return {
+				data: {
+					id: '' + item.from + item.to,
+					source: '' + item.from,
+					target: '' + item.to
+				}
+			}
+		});
+
+		let grahp2 = cytoscape({
+			container: document.getElementById('cyResult'),
+			elements: [
+				...data,
+				...edgesResult
+			],
+			style: [ // the stylesheet for the graph
+				{
+					selector: 'node',
+					style: {
+						'text-wrap': 'wrap',
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'text-max-width': '100px',
+						'label': 'data(id)',
+						'font-size': '10'
+					},
+				}
+			]
+		});
+	
   }
   
 
@@ -107,8 +131,6 @@ export class AppComponent {
   			this.edges.push({from: item, to: i, weight: parseInt(weight)});
   		}
   	});
-
-  	console.log(this.edges);
   }
 
   setTestToEdges() {
@@ -135,7 +157,8 @@ export class AppComponent {
 			result.push(item);
 	});
 
-	console.log(result);
+	this.result = result;
+	setTimeout(() => this.buildGraph(), 0);
 
 	
   }

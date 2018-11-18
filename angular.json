@@ -30,7 +30,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "src/d3.v3.min.js"
+
             ]
           },
           "configurations": {
